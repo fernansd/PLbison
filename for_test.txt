@@ -1,0 +1,11 @@
+dato := 8;
+escribir dato;
+@escribir dato; comentario prueba
+
+para dato
+	desde 0
+	hasta 6
+	paso 2
+	hacer {
+		escribir dato;
+} fin_para;

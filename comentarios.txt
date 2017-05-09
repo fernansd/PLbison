@@ -1,0 +1,5 @@
+pasos:
+	copiar ejemplo 9
+	adaptar las palabras reservadas para las sentencias ya existentes
+	incluir las sentencias adicionales
+* Consejo: hacer control de versiones que funcionen
