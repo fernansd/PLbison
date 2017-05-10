@@ -79,6 +79,7 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
                     ($1)[3]=(Inst)$8; /* paso entre cada iteracion */
                     ($1)[4]=(Inst)$10; /* cuerpo del bucle */
                     ($1)[5]=(Inst)$11; /* end */
+                    ($1)[6]=(Inst)$2;
                   }
         | '{' stmtlist '}'  {$$ = $2;}
         ;
@@ -101,7 +102,7 @@ si:          IF         {$$= code(ifcode); code3(STOP,STOP,STOP);}
 repetir:      REPEAT     {$$= code3(repeatcode,STOP,STOP);}
         ;
 
-para:         FOR        {$$= code3(forcode,STOP,STOP); code3(STOP,STOP,STOP);}
+para:         FOR        {$$= code3(forcode,STOP,STOP); code3(STOP,STOP,STOP);code(STOP);}
 
 end :    /* nada: produccion epsilon */  {code(STOP); $$ = progp;}
         ;

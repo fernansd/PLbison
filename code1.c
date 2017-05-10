@@ -530,19 +530,18 @@ void forcode()
 {
   Datum d;
   Inst *savepc = pc;
-  Symbol* variable = *((Symbol**)(savepc+6));
-  printf("%s\n", (variable->nombre));
-  printf("var for: %lf\n", variable->u.val);
+  Symbol* variable = (Symbol*)*(savepc+5);
+  printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);
 
   
 
   /* Inicializar variable del bucle */
   variable->u.val = ((Symbol *)*savepc)->u.val;
-  printf("a1 dato: %lf\n", variable->u.val);
+  printf("desde: %lf\n", variable->u.val);
   double until_var = ((Symbol *)*(savepc+1))->u.val;
-  printf("a2 until: %lf\n", until_var);
+  printf("hasta: %lf\n", until_var);
   double step = ((Symbol *)*(savepc+2))->u.val;
-  printf("a3 step: %lf\n", step);
+  printf("paso: %lf\n", step);
 
   while (variable->u.val != until_var) {
     execute(*((Inst **)(savepc+3)));
@@ -551,4 +550,8 @@ void forcode()
 
   /* Asignamos el pc a la posición de la siguiente instruccion */
   pc= *((Inst **)(savepc+4));
+
+  for (int i = 0; i < 6; i++) {
+    printf("i=%d -> %p\n", i, *(savepc+i));
+  }
 }

@@ -7,5 +7,8 @@ para dato
 	hasta 6
 	paso 2
 	hacer {
-		escribir dato;
+		escribir 5;
 } fin_para;
+
+@ Debe imprimir el valor de hasta
+escribir dato;
