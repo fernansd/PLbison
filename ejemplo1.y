@@ -101,10 +101,10 @@ mientras:    WHILE      {$$= code3(whilecode,STOP,STOP);}
 si:          IF         {$$= code(ifcode); code3(STOP,STOP,STOP);}
         ;
 
-repetir:      REPEAT     {$$= code3(repeatcode,STOP,STOP);}
+repetir:     REPEAT     {$$= code3(repeatcode,STOP,STOP);}
         ;
 
-para:         FOR        {$$= code3(forcode,STOP,STOP); code3(STOP,STOP,STOP);code(STOP);}
+para:        FOR        {$$= code3(forcode,STOP,STOP); code3(STOP,STOP,STOP);code(STOP);}
 
 end :    /* nada: produccion epsilon */  {code(STOP); $$ = progp;}
         ;

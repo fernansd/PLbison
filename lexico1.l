@@ -28,9 +28,20 @@ espacio 		[\t\n]
 "@".*\n	{;} /* En los comentarios se ignoran todos los caracteres */
 
 '([^'\n]|\\\')*' {
-            int len = strlen(yytext);
+            int len = yyleng;
             char *s = malloc(sizeof(char)*(len-1)); /* Se restan comillas y suma \0 */
             strncpy(s, yytext+1, len-2); /* Se copia sin comillas */
+
+            /* Instala la cadena en la tabla de símbolos */
+            Installval v;
+            v.str = s;
+            yylval.sym=install("",STRING,INDEFINIDA,v);
+            return STRING;}
+
+'''([^']|\\\')*''' {
+            int len = yyleng;
+            char *s = malloc(sizeof(char)*(len-5)); /* Se restan comillas y suma \0 */
+            strncpy(s, yytext+3, len-6); /* Se copia sin comillas */
 
             /* Instala la cadena en la tabla de símbolos */
             Installval v;

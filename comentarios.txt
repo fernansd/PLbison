@@ -4,7 +4,13 @@ pasos:
 	incluir las sentencias adicionales
 * Consejo: hacer control de versiones que funcionen
 
+-----
+
 Se han hecho a drede que las cadenas no puedan ser multilínea
+
 La función escribir se ha hecho más robusta al hacerse universal,
 pero se mantienen los dos símbolos, escribir y escribir_cadena
 los cuales pueden ser usados indistintamente
+
+Se han añadido cadenas multilínea, es decir, que aceptan saltos de línea
+dentro de la cadena. Se usan '''<cadena-multilinea>''' en lugar de '<cadena>'
