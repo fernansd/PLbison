@@ -7,13 +7,19 @@ escribir(5 _div 2);
 escribir((true _y false) _o false _o _no false);
 #
 
-# Prueba cadenas
+# Prueba cadenas #
 escribir_cadena('hola');
 s := 'test';
 d := 'dd' || 'cad';
 escribir_cadena(d);
 escribir_cadena(s || 'c de cadena');
-#
+leer_cadena(str);
+escribir('La cadena es: ' || str);
+si ('hola' == 'hola') entonces {
+	escribir('coinciden las cadenas');
+} si_no {
+	escribir('no coinciden las cadenas\n');
+} fin_si;
 
 # Prueba estructuras de control
 dato := 10;

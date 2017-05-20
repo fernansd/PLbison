@@ -326,7 +326,6 @@ void concatenar() {
   strcpy(d.str, d1.str);
   strcat(d.str, d2.str);
   d.subtipo = STRING;
-  printf("cadena concat: %s\n",d.str);
   push(d);
 }
 
