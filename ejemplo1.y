@@ -28,7 +28,7 @@
        Inst *inst;     /* instruccion de maquina */
 }
 
-%token <sym> NUMBER VAR CONSTANTE FUNCION0_PREDEFINIDA FUNCION1_PREDEFINIDA FUNCION2_PREDEFINIDA INDEFINIDA
+%token <sym> NUMBER STRING VAR CONSTANTE FUNCION0_PREDEFINIDA FUNCION1_PREDEFINIDA FUNCION2_PREDEFINIDA INDEFINIDA
 %token <sym> PRINT WHILE DO WHILE_END IF THEN ELSE IF_END READ REPEAT UNTIL FOR FROM STEP FOR_END
 %token <sym> READ_STR PRINT_STR CLEAN POSITION
 %type <inst> stmt asgn expr stmtlist cond mientras si repetir para end 
@@ -49,8 +49,10 @@ list :    /* nada: epsilon produccion */
 
 stmt :    /* nada: epsilon produccion */  {$$=progp;}
         | asgn          {code(pop2);}
-        | PRINT expr    {code(escribir); $$ = $2;}
+        | PRINT '(' expr ')'    {code(escribir); $$ = $3;}
         | READ '(' VAR ')' {code2(leervariable,(Inst)$3);}
+        | PRINT_STR '(' expr ')' {code(escribir); $$ = $3;}
+        | READ_STR '(' VAR ')' {code2(leercadena,(Inst)$3);}
         | mientras cond DO stmt end WHILE_END
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del bucle */
@@ -79,7 +81,7 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
                     ($1)[3]=(Inst)$8; /* paso entre cada iteracion */
                     ($1)[4]=(Inst)$10; /* cuerpo del bucle */
                     ($1)[5]=(Inst)$11; /* end */
-                    ($1)[6]=(Inst)$2;
+                    ($1)[6]=(Inst)$2; /* variable del bucle */
                   }
         | '{' stmtlist '}'  {$$ = $2;}
         ;
@@ -112,6 +114,7 @@ stmtlist:  /* nada: prodcuccion epsilon */ {$$=progp;}
         ;
 
 expr :    NUMBER     		{$$=code2(constpush,(Inst)$1);}
+        | STRING        {$$=code2(constpush,(Inst)$1);}
         | VAR        		{$$=code3(varpush,(Inst)$1,eval);} 
         | CONSTANTE      	{$$=code3(varpush,(Inst)$1,eval);}
         | asgn

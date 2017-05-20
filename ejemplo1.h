@@ -26,25 +26,33 @@ void init();
 
 typedef struct Symbol { /* entrada en la tabla de simbolos */
 	               char *nombre;
-	               short tipo;  /* VAR, FUNCION, INDEFINIDA */ 
-	               union {
-		              double val;        /* si es VAR */
+	               short tipo;  /* VAR, FUNCION, INDEFINIDA */
+	               short subtipo; /* VSTR, VNUM */
+	               struct {
+		              double val;        /* si es VAR NUMBER */
+	               	  char *str; /* si es VAR STRING */
 		              double (*ptr)();   /* si es FUNCION */
-		             } u;
+		            } u;
                        struct Symbol * siguiente;
 	              } Symbol;
 
 
+typedef union Installval { /* valor para la función install */
+					char *str; /* si es STRING */
+					double num; /* si es NUMBER */
+				  } Installval;
+
 /* Instala en la tabla de símbolos */
-Symbol *install(char *s, int t, double);
+Symbol *install(char *s, int tipo, int subtipo, Installval v);
 
 /* Busca en la tabla de símbolos */
 Symbol *lookup(char *s);
 
-typedef union Datum { /* tipo de la pila del interprete */ 
+typedef struct Datum { /* tipo de la pila del interprete */ 
                      double val;
                      Symbol *sym;
                      char *str;
+                     short subtipo; /* si es STRING o NUMBER */
                     } Datum;
 
 
@@ -114,5 +122,6 @@ void o_logico();
 void negacion();
 
 void leervariable();
+void leercadena();
 
 #endif

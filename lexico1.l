@@ -12,7 +12,7 @@ extern int lineno;
 /* definiciones regulares */
 numero        [0-9]
 letra         [a-zA-Z]
-identificador {letra}(({letra}|{numero}|_)*({letra}|{numero}))?
+identificador {letra}(({letra}|{numero}|_({letra}|{numero}))*)?
 espacio 		[\t\n]
 
 %x COMENTARIO
@@ -24,22 +24,38 @@ espacio 		[\t\n]
 <COMENTARIO>"#"	{BEGIN 0;} /* Vuelve al estado normal */
 <COMENTARIO>(.|{espacio})	{;}
 
-"@".*\n	{;}
+"@".*\n	{;} /* En los comentarios se ignoran todos los caracteres */
 
-{numero}+\.?|{numero}*\.{numero}+ {double d;  
-                                   sscanf(yytext,"%lf",&d);
-                                 /* Instala el numero en la tabla de simbolos */
-				   yylval.sym=install("",NUMBER,d); 
-				   return NUMBER;}
+\'((\\\')?.*)*\' {
+            char *s;
+            s = malloc(sizeof(char)*(strlen(yytext)+1));
+            sscanf(yytext,"%s",s);
+            /* Instala la cadena en la tabla de símbolos */
+            Installval v;
+            v.str = yytext;
+            yylval.sym=install("",STRING,INDEFINIDA,v);
+            return STRING;}
+
+{numero}+\.?|{numero}*\.{numero}+|{numero}*(\.{numero}*)?[eE]{numero}+ {
+            double d;  
+            sscanf(yytext,"%lf",&d);
+            /* Instala el numero en la tabla de simbolos */
+            Installval v;
+            v.num = d;
+				    yylval.sym=install("",NUMBER,INDEFINIDA,v); 
+				    return NUMBER;}
 
 {identificador} { Symbol *s;
-					for(int i = 0; yytext[i]; i++) {
+          int i;
+					for(i = 0; yytext[i]; i++) {
 						yytext[i] = tolower(yytext[i]);
 					}
-                   if ((s=lookup(yytext)) == 0)
-                               s = install (yytext, INDEFINIDA, 0.0);
-                    yylval.sym = s;
-                    return s->tipo == INDEFINIDA ? VAR : s->tipo;}
+          Installval v;
+          v.str = 0;
+          if ((s=lookup(yytext)) == 0)
+                  s = install (yytext, INDEFINIDA,INDEFINIDA, v);
+          yylval.sym = s;
+          return s->tipo == INDEFINIDA ? VAR : s->tipo;}
 
 ">="	{return MAYOR_IGUAL;}
 "<="	{return MENOR_IGUAL;}

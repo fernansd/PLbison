@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include  <math.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "ejemplo1.h"
 #include "ejemplo1.tab.h"
@@ -105,8 +107,14 @@ void assign() /* asignar el valor superior al siguiente valor */
 void constpush()  /* meter una constante en la pila */
 {
  Datum d;
- 
- d.val= ((Symbol *)*pc++)->u.val;
+ Symbol *s = ((Symbol *)*pc++);
+ if (s->tipo==STRING) {
+  d.str = s->u.str;
+  d.subtipo = STRING;
+ } else { /* tipo NUMBER */
+  d.val= s->u.val;
+  d.subtipo = NUMBER;
+ }
  push(d);
 }
 
@@ -148,8 +156,14 @@ void escribir() /* sacar de la pila el valor superior y escribirlo */
  Datum d;
  
  d=pop();  /* Obtener numero */
- 
- printf("\t ---> %.8g\n",d.val);
+
+ if (d.subtipo == STRING) {
+  printf("\t ---> %s\n", d.str);
+ } else if (d.subtipo == NUMBER) {
+  printf("\t ---> %.8g\n",d.val);
+ } else {
+  printf("\t Error. Tipo a escribir desconocido.\n");
+ }
 }
 
 void eval() /* evaluar una variable en la pila */
@@ -161,8 +175,13 @@ void eval() /* evaluar una variable en la pila */
 /* Si la variable no esta definida */ 
  if (d.sym->tipo == INDEFINIDA) 
      execerror (" Variable no definida ", d.sym->nombre);
- 
- d.val=d.sym->u.val;  /* Sustituir variable por valor */
+ if (d.sym->subtipo == STRING) {
+    d.str = d.sym->u.str;
+    d.subtipo = STRING;
+ } else { /* subtipo NUMBER */
+    d.val = d.sym->u.val;
+    d.subtipo = NUMBER;
+ }
  push(d);             /* Apilar valor */
 }
 
@@ -303,17 +322,40 @@ void leervariable() /* Leer una variable numerica por teclado */
  /* Se comprueba si el identificador es una variable */ 
   if ((variable->tipo == INDEFINIDA) || (variable->tipo == VAR))
     { 
-    printf("Valor--> ");
+    printf("Número--> ");
     while((c=getchar())=='\n') ;
     ungetc(c,stdin);
     scanf("%lf",&variable->u.val);
     variable->tipo=VAR;
+    variable->subtipo=NUMBER;
     pc++;
 
    }
  else
      execerror("No es una variable",variable->nombre);
-}           
+}
+
+void leercadena()
+{
+  Symbol *variable;
+  char s[128]; /* Buffer de lectura */
+
+  variable = (Symbol *)(*pc);
+
+  if ((variable->tipo == INDEFINIDA) || (variable->tipo == VAR))
+  {
+    printf("Cadena--> ");
+    while((s[0]=getchar())=='\n') ;
+    fgets(&s[1],127,stdin);
+    variable->u.str = malloc(sizeof(char)*(strlen(s)+1));
+    strcpy(variable->u.str, s);
+    variable->tipo=VAR;
+    variable->subtipo=STRING;
+    pc++;
+  } else {
+    execerror("No es una variable",variable->nombre);
+  }
+}         
 
 
 void mayor_que()
@@ -528,20 +570,21 @@ void repeatcode()
 
 void forcode()
 {
-  Datum d;
   Inst *savepc = pc;
   Symbol* variable = (Symbol*)*(savepc+5);
-  printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);
-
-  
+  /*printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);*/
 
   /* Inicializar variable del bucle */
   variable->u.val = ((Symbol *)*savepc)->u.val;
-  printf("desde: %lf\n", variable->u.val);
+  /*printf("desde: %lf\n", variable->u.val);*/
+
+  /* Valor de parada del bucle */
   double until_var = ((Symbol *)*(savepc+1))->u.val;
-  printf("hasta: %lf\n", until_var);
+  /*printf("hasta: %lf\n", until_var);*/
+
+  /* Valor del paso dado entre iteraciones */
   double step = ((Symbol *)*(savepc+2))->u.val;
-  printf("paso: %lf\n", step);
+  /*printf("paso: %lf\n", step);*/
 
   while (variable->u.val != until_var) {
     execute(*((Inst **)(savepc+3)));
@@ -550,8 +593,4 @@ void forcode()
 
   /* Asignamos el pc a la posición de la siguiente instruccion */
   pc= *((Inst **)(savepc+4));
-
-  for (int i = 0; i < 6; i++) {
-    printf("i=%d -> %p\n", i, *(savepc+i));
-  }
 }

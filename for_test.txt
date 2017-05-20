@@ -1,14 +1,12 @@
-dato := 8;
-escribir dato;
-@escribir dato; comentario prueba
-
+#
+Fichero que prueba el funcionamiento del bucle para
+Actualmente no funciona para variables no declaradas antes
+#
+dato := 3;
 para dato
 	desde 0
-	hasta 6
+	hasta 1e1 @hasta 10, con notación científica
 	paso 2
 	hacer {
-		escribir 5;
+		escribir dato;
 } fin_para;
-
-@ Debe imprimir el valor de hasta
-escribir dato;

@@ -63,7 +63,7 @@ PALABRAS RESERVADAS:		[x]							CHECK
 
 
 -----------------------------------------------------------------
-IDENTIFICADORES:		[ ]								CHECK
+IDENTIFICADORES:		[x]								CHECK
 -----------------------------------------------------------------
 	COMPUESTOS POR LETRAS, DIGITOS Y SUBRAYADOS 		[x]
 	COMIENZA POR UNA LETRA								[x]
@@ -74,13 +74,13 @@ IDENTIFICADORES:		[ ]								CHECK
 
 
 -----------------------------------------------------------------
-NUMERO:					[ ]								CHECK
+NUMERO:					[x]								CHECK
 -----------------------------------------------------------------
-	ENTEROS 											[ ]
-	REALES DE PUNTO FIJO								[ ]
-	REALES NOTACION CIENTIFICA							[ ]
+	ENTEROS 											[x]
+	REALES DE PUNTO FIJO								[x]
+	REALES NOTACION CIENTIFICA							[x]
 
-	TODOS SON TRATADOS COMO NUMERO						[ ]
+	TODOS SON TRATADOS COMO NUMERO						[x]
 
 -----------------------------------------------------------------
 CADENA:					[ ]								CHECK
@@ -93,7 +93,7 @@ CADENA:					[ ]								CHECK
 -----------------------------------------------------------------
 OPERADORES:				[ ]								CHECK
 -----------------------------------------------------------------
-	NUMERICOS											[ ]
+	NUMERICOS											[x]
 		ASIGNACION :=									[x]
 		SUMA +											[x]
 			UNARIO +2									[x]
@@ -168,7 +168,7 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 				sentencias
 			hasta cond
 
-		BUCLE "para"									[ ]
+		BUCLE "para"									[x]
 			para identificador
 				desde expr numerica 1
 				hasta expr numerica 2
