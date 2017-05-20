@@ -1,10 +1,15 @@
+#
 escribir(5 _mod 3);
 escribir(5 _div 2);
 escribir((true _y false) _o false _o _no false);
+#
 
 escribir_cadena('hola');
 s := 'test';
-escribir_cadena('test');
+d := 'dd' || 'cad';
+escribir_cadena(d);
+escribir_cadena(s || 'c de cadena');
+
 #
 dato := 10;
 escribir(dato);

@@ -27,10 +27,10 @@ void init();
 typedef struct Symbol { /* entrada en la tabla de simbolos */
 	               char *nombre;
 	               short tipo;  /* VAR, FUNCION, INDEFINIDA */
-	               short subtipo; /* VSTR, VNUM */
+	               short subtipo; /* STRING, NUMBER */
 	               struct {
-		              double val;        /* si es VAR NUMBER */
-	               	  char *str; /* si es VAR STRING */
+		              double val;        /* si es NUMBER */
+	               	  char *str; 		 /* si es STRING */
 		              double (*ptr)();   /* si es FUNCION */
 		            } u;
                        struct Symbol * siguiente;
@@ -103,6 +103,7 @@ void positivo();
 void potencia(); 
 void restar();
 void sumar();
+void concatenar();
 void varpush();
 
 

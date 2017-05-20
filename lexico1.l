@@ -22,14 +22,15 @@ espacio 		[\t\n]
 
 "#" {BEGIN COMENTARIO;}
 <COMENTARIO>"#"	{BEGIN 0;} /* Vuelve al estado normal */
-<COMENTARIO>(.|{espacio})	{;}
+<COMENTARIO>\n   {lineno++;}
+<COMENTARIO>.   {;}
 
 "@".*\n	{;} /* En los comentarios se ignoran todos los caracteres */
 
 '([^'\n]|\\\')*' {
             char *s;
-            s = malloc(sizeof(char)*(strlen(yytext)+1));
-            sscanf(yytext,"'%s'",s);
+            s = malloc(sizeof(char)*(strlen(yytext)));
+            strcpy(s, yytext+1); /* Copia y elimina comilla inicial */
             s[strlen(s)-1] = '\0'; /* Elimina la comilla del final */
 
             /* Instala la cadena en la tabla de símbolos */
@@ -58,7 +59,7 @@ espacio 		[\t\n]
                   s = install (yytext, INDEFINIDA,INDEFINIDA, v);
           yylval.sym = s;
           return s->tipo == INDEFINIDA ? VAR : s->tipo;}
-
+"||"  {return CONCATENAR;}
 ">="	{return MAYOR_IGUAL;}
 "<="	{return MENOR_IGUAL;}
 "=="	{return IGUAL;}

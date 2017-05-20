@@ -94,13 +94,18 @@ void assign() /* asignar el valor superior al siguiente valor */
 {
  Datum d1,d2;
  d1=pop();    /* Obtener variable */
- d2=pop();    /* Obtener numero   */
+ d2=pop();    /* Obtener valor    */
  
  if (d1.sym->tipo != VAR && d1.sym->tipo != INDEFINIDA)
    execerror(" asignacion a un elemento que no es una variable ", 
 	     d1.sym->nombre);
-  d1.sym->u.val=d2.val;   /* Asignar valor   */
+ if (d2.subtipo == STRING) {
+  d1.sym->u.str=d2.str;  /* Asignar cadena */
+ } else {
+  d1.sym->u.val=d2.val;   /* Asignar numero */
+ }
   d1.sym->tipo=VAR;
+  d1.sym->subtipo=d2.subtipo;
   push(d2);               /* Apilar variable */
 }
 
@@ -162,7 +167,7 @@ void escribir() /* sacar de la pila el valor superior y escribirlo */
  } else if (d.subtipo == NUMBER) {
   printf("\t ---> %.8g\n",d.val);
  } else {
-  printf("\t Error. Tipo a escribir desconocido.\n");
+  execerror(" Error. Tipo a escribir desconocido", (char *) 0);
  }
 }
 
@@ -300,6 +305,29 @@ void sumar()   /* sumar los dos valores superiores de la pila */
  d1=pop();                   /* Obtener el segundo numero */
  d1.val = d1.val + d2.val;   /* Sumar                     */
  push(d1);                   /* Apilar el resultado       */
+}
+
+void concatenar() {
+  Datum d1, d2;
+  d2 = pop();
+  if (d2.subtipo != STRING) {
+    execerror(" segundo operando no es una cadena", (char*) 0);
+    printf("\t\t tipo: %d\n",d2.subtipo);
+  }
+  d1 = pop();
+  if (d1.subtipo != STRING) {
+    execerror(" primer operando no es una cadena", (char*) 0);
+    printf("\t\t tipo: %d\n",d1.subtipo);
+  }
+  
+  Datum d;
+  int len = strlen(d1.str) + strlen(d2.str);
+  d.str = malloc(sizeof(char)*(len+1));
+  strcpy(d.str, d1.str);
+  strcat(d.str, d2.str);
+  d.subtipo = STRING;
+  printf("cadena concat: %s\n",d.str);
+  push(d);
 }
 
 void varpush()  /* meter una variable en la pila */

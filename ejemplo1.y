@@ -36,7 +36,7 @@
 %left O_LOGICO
 %left Y_LOGICO
 %left MAYOR_QUE MENOR_QUE MENOR_IGUAL MAYOR_IGUAL DISTINTO IGUAL
-%left '+' '-'
+%left '+' '-' CONCATENAR
 %left '*' '/' DIVIDIR_INT MODULO
 %left UNARIO NEGACION
 %right POTENCIA   
@@ -127,6 +127,7 @@ expr :    NUMBER     		{$$=code2(constpush,(Inst)$1);}
         | expr '-' expr 	{code(restar);}
         | expr '*' expr 	{code(multiplicar);}
         | expr '/' expr 	{code(dividir);}
+        | expr CONCATENAR expr {code(concatenar);}
         | expr MODULO expr 	{code(modulo);}
         | expr DIVIDIR_INT expr {code(dividir_int);}
         | expr POTENCIA expr 	{code(potencia);}
