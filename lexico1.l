@@ -26,13 +26,15 @@ espacio 		[\t\n]
 
 "@".*\n	{;} /* En los comentarios se ignoran todos los caracteres */
 
-\'((\\\')?.*)*\' {
+'([^'\n]|\\\')*' {
             char *s;
             s = malloc(sizeof(char)*(strlen(yytext)+1));
-            sscanf(yytext,"%s",s);
+            sscanf(yytext,"'%s'",s);
+            s[strlen(s)-1] = '\0'; /* Elimina la comilla del final */
+
             /* Instala la cadena en la tabla de símbolos */
             Installval v;
-            v.str = yytext;
+            v.str = s;
             yylval.sym=install("",STRING,INDEFINIDA,v);
             return STRING;}
 

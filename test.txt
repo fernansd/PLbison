@@ -2,10 +2,12 @@ escribir(5 _mod 3);
 escribir(5 _div 2);
 escribir((true _y false) _o false _o _no false);
 
-escribir('hola');
-
+escribir_cadena('hola');
+s := 'test';
+escribir_cadena('test');
+#
 dato := 10;
-escribir dato;
+escribir(dato);
 mientras (dato > 0)
 hacer {
   si (dato _mod 2 == 0) entonces escribir(dato)
@@ -41,3 +43,4 @@ para dato
 	hacer {
 		escribir(dato);
 } fin_para;
+#

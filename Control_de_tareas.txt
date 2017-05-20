@@ -83,12 +83,12 @@ NUMERO:					[x]								CHECK
 	TODOS SON TRATADOS COMO NUMERO						[x]
 
 -----------------------------------------------------------------
-CADENA:					[ ]								CHECK
+CADENA:					[x]								CHECK
 -----------------------------------------------------------------
-	CARACTERES DELIMITADOS POR COMILLAS SIMPLES 		[ ]
-	INCLUYE COMILLA SIMPLE CON \ \'						[ ]
+	CARACTERES DELIMITADOS POR COMILLAS SIMPLES 		[x]
+	INCLUYE COMILLA SIMPLE CON \\'						[x]
 
-	COMILLAS EXTERIORES NO SON PARTE DE LA CADENA 		[ ]
+	COMILLAS EXTERIORES NO SON PARTE DE LA CADENA 		[x]
 
 -----------------------------------------------------------------
 OPERADORES:				[ ]								CHECK
