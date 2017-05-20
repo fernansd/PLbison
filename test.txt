@@ -1,16 +1,21 @@
-#
+# Prueba de _mod y _div
 escribir(5 _mod 3);
 escribir(5 _div 2);
+#
+
+# Prueba de expresiones booleanas
 escribir((true _y false) _o false _o _no false);
 #
 
+# Prueba cadenas
 escribir_cadena('hola');
 s := 'test';
 d := 'dd' || 'cad';
 escribir_cadena(d);
 escribir_cadena(s || 'c de cadena');
-
 #
+
+# Prueba estructuras de control
 dato := 10;
 escribir(dato);
 mientras (dato > 0)
@@ -34,11 +39,13 @@ hacer {
 	escribir(dato);
 	dato := dato - 1;
 } fin_mientras;
+
 dato := 0;
 repetir {
 	escribir(dato);
 	dato := dato + 1;
 } hasta (dato == 5);
+
 dato := 8;
 escribir(dato);
 para dato

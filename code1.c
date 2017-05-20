@@ -319,7 +319,7 @@ void concatenar() {
     execerror(" primer operando no es una cadena", (char*) 0);
     printf("\t\t tipo: %d\n",d1.subtipo);
   }
-  
+
   Datum d;
   int len = strlen(d1.str) + strlen(d2.str);
   d.str = malloc(sizeof(char)*(len+1));
@@ -392,11 +392,24 @@ void mayor_que()
  
  d2=pop();   /* Obtener el primer numero  */
  d1=pop();   /* Obtener el segundo numero */
- 
- if (d1.val > d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) == 1)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val > d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);  /* Apilar resultado */
 }
@@ -408,11 +421,24 @@ void menor_que()
  
  d2=pop();    /* Obtener el primer numero  */
  d1=pop();    /* Obtener el segundo numero */
- 
- if (d1.val < d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) == -1)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val < d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);    /* Apilar el resultado */
 }
@@ -425,10 +451,23 @@ void igual()
  d2=pop();    /* Obtener el primer numero  */
  d1=pop();    /* Obtener el segundo numero */
  
- if (d1.val == d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) == 0)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val == d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);    /* Apilar resultado */
 }
@@ -440,10 +479,23 @@ void mayor_igual()
  d2=pop();    /* Obtener el primer numero  */
  d1=pop();    /* Obtener el segundo numero */
  
- if (d1.val >= d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) >= 0)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val >= d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);    /* Apilar resultado */
 }
@@ -456,10 +508,23 @@ void menor_igual()
  d2=pop();     /* Obtener el primer numero  */
  d1=pop();     /* Obtener el segundo numero */
  
- if (d1.val <= d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) <= 0)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val <= d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);     /* Apilar resultado */
 }
@@ -471,10 +536,23 @@ void distinto()
  d2=pop();    /* Obtener el primer numero  */
  d1=pop();    /* Obtener el segundo numero */
  
- if (d1.val != d2.val)
-   d1.val= 1;
- else
-   d1.val=0;
+ if (d1.subtipo == STRING && d2.subtipo == STRING) {
+  if (strcmp(d1.str, d2.str) != 0)
+    d1.val = 1;
+  else
+    d1.val = 0;
+
+ } else if (d1.subtipo == NUMBER && d2.subtipo == NUMBER) {
+   if (d1.val != d2.val)
+     d1.val = 1;
+   else
+     d1.val = 0;
+
+ } else {
+    execerror(" No concuerdan los tipos de los operandos", (char*)0);
+ }
+
+ d1.subtipo = NUMBER; /* A los valores booleanos se les trata como números */
  
  push(d1);    /* Apilar resultado */
 }

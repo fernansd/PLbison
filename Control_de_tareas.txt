@@ -107,15 +107,15 @@ OPERADORES:				[ ]								CHECK
 		MODULO _mod										[x]
 		POTENCIA **										[x]
 
-	ALFANUMERICOS										[ ]
-		CONCATENACION ||								[ ]
+	ALFANUMERICOS										[x]
+		CONCATENACION ||								[x]
 
-	RELACIONALES NUMEROS Y CADENAS						[ ]
-		MENOR QUE <										[ ]
-		MENOR O IGUAL QUE <=							[ ]
-		MAYOR QUE >										[ ]
-		MAYOR O IGUAL QUE >=							[ ]
-		DISTINTO DE <>									[ ]
+	RELACIONALES NUMEROS Y CADENAS						[x]
+		MENOR QUE <										[x]
+		MENOR O IGUAL QUE <=							[x]
+		MAYOR QUE >										[x]
+		MAYOR O IGUAL QUE >=							[x]
+		DISTINTO DE <>									[x]
 
 	LOGICOS												[x]
 		DISYUNCIÓN _o									[x]
@@ -134,19 +134,19 @@ OTROS:					[x]								CHECK
 -----------------------------------------------------------------
 SENTENCIAS DE CONTROL:	[ ]								CHECK
 -----------------------------------------------------------------
-	ASIGNACION											[ ]
+	ASIGNACION											[x]
 		IDENTIFICADOR := EXPR NUMÉRICA					[x]
-		IDENTIFICADOR := EXPR ALFANUMÉRICA				[ ]
+		IDENTIFICADOR := EXPR ALFANUMÉRICA				[x]
 
 	LECTURA												[ ]
 		Leer(identificador)								[x]
 		Leer_cadena(identificador)						[ ]
 
-	ESCRITURA											[ ]
+	ESCRITURA											[x]
 		Escribir										[x]
-		Escribir_cadena									[ ]
+		Escribir_cadena									[x]
 
-	SENTENCIAS DE CONTROL								[ ]
+	SENTENCIAS DE CONTROL								[x]
 		CONDICIONAL SIMPLE								[x]
 			si cond
 				entonces sentencias
@@ -184,9 +184,9 @@ COMANDOS ESPECIALES:	[ ]								CHECK
 	_lugar(expr numérica 1, expr numérica 2)			[ ]
 
 -----------------------------------------------------------------
-OBSERVACIONES:			[ ]								CHECK
+OBSERVACIONES:			[x]								CHECK
 -----------------------------------------------------------------
-	CAMBIO DE TIPO DINÁMICO								[ ]
+	CAMBIO DE TIPO DINÁMICO								[x]
 
 
 -----------------------------------------------------------------
