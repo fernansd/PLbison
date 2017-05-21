@@ -124,6 +124,8 @@ void y_logico();
 void o_logico();
 void negacion();
 
+void evaluarcadena(char* s);
+
 void leervariable();
 void leercadena();
 

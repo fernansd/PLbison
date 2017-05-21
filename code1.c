@@ -410,15 +410,47 @@ void leercadena()
 
     while((s[0]=getchar())=='\n') ;
     fgets(&s[1],127,stdin);
-    variable->u.str = malloc(sizeof(char)*(strlen(s)+1));
+    int len = strlen(s);
+    s[len-1] = '\0'; /* Elimina \n del final */
+
+    variable->u.str = malloc(sizeof(char)*(len+1));
     strcpy(variable->u.str, s);
+    evaluarcadena(variable->u.str);
     variable->tipo=VAR;
     variable->subtipo=STRING;
     pc++;
   } else {
     execerror("No es una variable",variable->nombre);
   }
-}         
+}
+
+void evaluarcadena(char *s)
+{
+  int i = 0; /* Variable para recorrer la cadena original */
+  int pos = 0; /* Variable para insertar la cadena evaluada */
+  while (s[i] != '\0') {
+    if (s[i] == '\\') { /* Compramos si es un carácter escapado */
+      i++;              /* y sustituimos si es necesario        */
+      if (s[i] == 't') {
+        s[pos] = '\t';
+      } else if (s[i] == 'n') {
+        s[pos] = '\n';
+      } else if (s[i] == '\'') {
+        s[pos] = '\'';
+      } else if (s[i] == '\\') {
+        s[pos] = '\\';
+      } else { /* Para caracteres que no corresponden a uno escapado */
+        s[pos++] = '\\';
+        s[pos] = s[i];
+      }
+    } else { /* Para caracteres normales */
+      s[pos] = s[i];
+    }
+    i++;
+    pos++;
+  }
+  s[pos] = '\0';
+}
 
 
 void mayor_que()
@@ -741,7 +773,7 @@ void forcode()
 
   /* Sólo si es válido el bloque de instrucciones */
   if (*((Inst **)(savepc+2))) {
-    while (variable->u.val != until_var) {
+    while (variable->u.val <= until_var) {
       
       execute(*((Inst **)(savepc+2)));
       variable->u.val += step;

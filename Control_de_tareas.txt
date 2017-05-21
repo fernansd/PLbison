@@ -138,9 +138,9 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 		IDENTIFICADOR := EXPR NUMÉRICA					[x]
 		IDENTIFICADOR := EXPR ALFANUMÉRICA				[x]
 
-	LECTURA												[ ]
+	LECTURA												[x]
 		Leer(identificador)								[x]
-		Leer_cadena(identificador)						[ ]
+		Leer_cadena(identificador)						[x]
 
 	ESCRITURA											[x]
 		Escribir										[x]
@@ -178,10 +178,10 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 			fin_para
 
 -----------------------------------------------------------------
-COMANDOS ESPECIALES:	[ ]								CHECK
+COMANDOS ESPECIALES:	[x]								CHECK
 -----------------------------------------------------------------
-	_borrar												[ ]
-	_lugar(expr numérica 1, expr numérica 2)			[ ]
+	_borrar												[x]
+	_lugar(expr numérica 1, expr numérica 2)			[x]
 
 -----------------------------------------------------------------
 OBSERVACIONES:			[x]								CHECK

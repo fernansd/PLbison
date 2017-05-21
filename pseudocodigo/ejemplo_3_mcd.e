@@ -17,6 +17,8 @@
  
 @ Máximo común divisor mediante el algoritmo de Euclides
 
+_borrar;
+
 _lugar(10,10);
 escribir_cadena(' Máximo común divisor de dos números ');
 

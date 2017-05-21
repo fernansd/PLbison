@@ -31,6 +31,7 @@ espacio 		[\t\n]
             int len = yyleng;
             char *s = malloc(sizeof(char)*(len-1)); /* Se restan comillas y suma \0 */
             strncpy(s, yytext+1, len-2); /* Se copia sin comillas */
+            evaluarcadena(s);
 
             /* Instala la cadena en la tabla de símbolos */
             Installval v;
@@ -42,6 +43,7 @@ espacio 		[\t\n]
             int len = yyleng;
             char *s = malloc(sizeof(char)*(len-5)); /* Se restan comillas y suma \0 */
             strncpy(s, yytext+3, len-6); /* Se copia sin comillas */
+            evaluarcadena(s);
 
             /* Instala la cadena en la tabla de símbolos */
             Installval v;
@@ -73,7 +75,7 @@ espacio 		[\t\n]
 "||"  {return CONCATENAR;}
 ">="	{return MAYOR_IGUAL;}
 "<="	{return MENOR_IGUAL;}
-"=="	{return IGUAL;}
+"="	{return IGUAL;}
 "<>"	{return DISTINTO;}
 ">"		{return MAYOR_QUE;}
 "<"		{return MENOR_QUE;}

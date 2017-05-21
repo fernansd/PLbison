@@ -99,4 +99,4 @@ repetir
 
 _borrar;
 _lugar(10,10);
-escribir_cadena('El programa ha concluido');
+escribir_cadena('El programa ha concluido\n');

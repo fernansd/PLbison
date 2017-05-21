@@ -63,9 +63,9 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
         | si cond THEN stmtlist end IF_END/* proposicion if sin parte else */
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del if */
-                   ($1)[3]=(Inst)$6; /* siguiente instruccion al if */
+                   ($1)[3]=(Inst)$5; /* siguiente instruccion al if */
                   }
-        | si cond THEN stmtlist ELSE stmtlist end IF_END/* proposicion if con parte else */
+        | si cond THEN stmtlist end ELSE stmtlist end IF_END/* proposicion if con parte else */
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del if */
                    ($1)[2]=(Inst)$7; /* cuerpo del else */
