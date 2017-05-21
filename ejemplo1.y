@@ -83,7 +83,8 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
                     ($1)[5]=(Inst)$11; /* end */
                     ($1)[6]=(Inst)$2; /* variable del bucle */
                   }
-        | '{' stmtlist '}'  {$$ = $2;}
+        | stmtlist {$$ = $1;}
+        /* | '{' stmtlist '}'  {$$ = $2;} */
         ;
 
 
