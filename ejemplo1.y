@@ -31,7 +31,7 @@
 %token <sym> NUMBER STRING VAR CONSTANTE FUNCION0_PREDEFINIDA FUNCION1_PREDEFINIDA FUNCION2_PREDEFINIDA INDEFINIDA
 %token <sym> PRINT WHILE DO WHILE_END IF THEN ELSE IF_END READ REPEAT UNTIL FOR FROM STEP FOR_END
 %token <sym> READ_STR PRINT_STR CLEAN POSITION
-%type <inst> stmt asgn expr stmtlist cond mientras si repetir para end 
+%type <inst> stmt asgn expr stmtlist cond mientras si repetir para variable end 
 %right ASIGNACION
 %left O_LOGICO
 %left Y_LOGICO
@@ -76,17 +76,17 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
                     ($1)[1]=(Inst)$5; /* condición de repetir */
                     ($1)[2]=(Inst)$6; /* siguiente instruccion */
                   }
-        | para VAR FROM NUMBER UNTIL NUMBER STEP NUMBER DO stmtlist end FOR_END
+        | para variable FROM expr end UNTIL expr end STEP expr end DO stmtlist end FOR_END
                   {
-                    ($1)[1]=(Inst)$4; /* valor inicial */
-                    ($1)[2]=(Inst)$6; /* valor final */
-                    ($1)[3]=(Inst)$8; /* paso entre cada iteracion */
-                    ($1)[4]=(Inst)$10; /* cuerpo del bucle */
-                    ($1)[5]=(Inst)$11; /* end */
-                    ($1)[6]=(Inst)$2; /* variable del bucle */
+                    ($1)[1]=(Inst)$7;  /* valor final */
+                    ($1)[2]=(Inst)$10; /* paso entre cada iteracion */
+                    ($1)[3]=(Inst)$13; /* cuerpo del bucle */
+                    ($1)[4]=(Inst)$14; /* end */
                   }
         /* | '{' stmtlist '}'  {$$ = $2;} */
         ;
+
+variable: VAR {code((Inst)$1); $$=progp;}
 
 
 asgn :    VAR ASIGNACION expr { $$=$3; code3(varpush,(Inst)$1,assign);}
@@ -106,7 +106,7 @@ si:          IF         {$$= code(ifcode); code3(STOP,STOP,STOP);}
 repetir:     REPEAT     {$$= code3(repeatcode,STOP,STOP);}
         ;
 
-para:        FOR        {$$= code3(forcode,STOP,STOP); code3(STOP,STOP,STOP);code(STOP);}
+para:        FOR        {$$= code3(forcode,STOP,STOP); code2(STOP,STOP);}
 
 end :    /* nada: produccion epsilon */  {code(STOP); $$ = progp;}
         ;

@@ -69,6 +69,7 @@ espacio 		[\t\n]
                   s = install (yytext, INDEFINIDA,INDEFINIDA, v);
           yylval.sym = s;
           return s->tipo == INDEFINIDA ? VAR : s->tipo;}
+
 "||"  {return CONCATENAR;}
 ">="	{return MAYOR_IGUAL;}
 "<="	{return MENOR_IGUAL;}

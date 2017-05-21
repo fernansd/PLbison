@@ -82,7 +82,7 @@ repetir
 
        		para i desde 2 hasta N paso 1 hacer
 	            factorial := factorial * i;
-        	fin_para;
+        	fin_para
 
         	@ Resultado
 	        _lugar(15,10);
@@ -147,13 +147,13 @@ repetir
  			fin_si;   
   	fin_si;                 
 
-  fin_si;                          
+  fin_si                          
 
  _lugar(40,10); 
  escribir_cadena('\n Pulse una tecla para continuar --> ');
  leer_cadena(pausa);
  
-hasta (opcion = 0);             
+hasta (=  opcion 0);             
 
 @ Despedida final
 

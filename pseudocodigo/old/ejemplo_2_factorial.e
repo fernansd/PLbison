@@ -33,7 +33,7 @@ fin_para;
 
 @ Se muestra el resultado
 
-_lugar(15,10);
+lugar(15,10);
 escribir_cadena(' El factorial de ');
 escribir(N);
 escribir_cadena(' es ');

@@ -715,30 +715,39 @@ void repeatcode()
 void forcode()
 {
   Inst *savepc = pc;
-  Symbol* variable = (Symbol*)*(savepc+5);
-  /*printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);*/
+  Datum d;
+
+  Symbol* variable = (Symbol*)*(savepc+4);
+  printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);
+  variable->tipo = VAR;
 
   /* Inicializar variable del bucle */
-  variable->u.val = ((Symbol *)*savepc)->u.val;
-  /*printf("desde: %lf\n", variable->u.val);*/
+  execute(savepc+5);
+  d = pop();
+  variable->u.val = d.val;
+  printf("desde: %lf\n", variable->u.val);
 
   /* Valor de parada del bucle */
-  double until_var = ((Symbol *)*(savepc+1))->u.val;
-  /*printf("hasta: %lf\n", until_var);*/
+  execute((Inst*)*(savepc));
+  d = pop();
+  double until_var = d.val;
+  printf("hasta: %lf\n", until_var);
 
   /* Valor del paso dado entre iteraciones */
-  double step = ((Symbol *)*(savepc+2))->u.val;
-  /*printf("paso: %lf\n", step);*/
+  execute((Inst*)*(savepc+1));
+  d = pop();
+  double step = d.val;
+  printf("paso: %lf\n", step);
 
   /* Sólo si es válido el bloque de instrucciones */
-  if (*((Inst **)(savepc+3))) {
+  if (*((Inst **)(savepc+2))) {
     while (variable->u.val != until_var) {
       
-      execute(*((Inst **)(savepc+3)));
+      execute(*((Inst **)(savepc+2)));
       variable->u.val += step;
     }
   }
 
   /* Asignamos el pc a la posición de la siguiente instruccion */
-  pc= *((Inst **)(savepc+4));
+  pc= *((Inst **)(savepc+3));
 }
