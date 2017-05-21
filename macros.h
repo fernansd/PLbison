@@ -12,13 +12,13 @@
 #include <stdio.h>
 
 /*! LUGAR */
-#define LUGAR(x,y)   printf("\033[%d;%dH",x,y) 
+#define LUGAR(x,y)   printf("\033[%d;%dH",x,y)
 
 /*! Borra la pantalla */
-#define CLEAR_SCREEN printf("\33[2J") 
+#define CLEAR_SCREEN printf("\33[2J")
 
 /*! Borra hasta el final de línea */
-#define CLEAR_REST_OF_LINE  printf("\33[K") 
+#define CLEAR_REST_OF_LINE  printf("\33[K")
 
 /*! desactiva */
 #define RESET	     printf("\e[0m") 

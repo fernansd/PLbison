@@ -89,6 +89,8 @@ void dividir();
 void dividir_int();
 void escribir();
 void eval();
+void borrarpantalla();
+void posicion();
 
 
 void funcion0();

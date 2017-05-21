@@ -53,28 +53,30 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
         | READ '(' VAR ')' {code2(leervariable,(Inst)$3);}
         | PRINT_STR '(' expr ')' {code(escribir); $$ = $3;}
         | READ_STR '(' VAR ')' {code2(leercadena,(Inst)$3);}
-        | mientras cond DO stmt end WHILE_END
+        | CLEAN         {code(borrarpantalla);}
+        | POSITION '(' NUMBER ',' NUMBER ')' {code3(posicion,(Inst)$3,(Inst)$5);}
+        | mientras cond DO stmtlist end WHILE_END
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del bucle */
                    ($1)[2]=(Inst)$5; /* siguiente instruccion al bucle */
                   }
-        | si cond THEN stmt end IF_END/* proposicion if sin parte else */
+        | si cond THEN stmtlist end IF_END/* proposicion if sin parte else */
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del if */
                    ($1)[3]=(Inst)$6; /* siguiente instruccion al if */
                   }
-        | si cond THEN stmt end ELSE stmt end IF_END/* proposicion if con parte else */
+        | si cond THEN stmtlist ELSE stmtlist end IF_END/* proposicion if con parte else */
                   {
                    ($1)[1]=(Inst)$4; /* cuerpo del if */
                    ($1)[2]=(Inst)$7; /* cuerpo del else */
                    ($1)[3]=(Inst)$8; /* siguiente instruccion al if-else */
                   }
-        | repetir stmt end UNTIL cond end
+        | repetir stmtlist end UNTIL cond end
                   {
                     ($1)[1]=(Inst)$5; /* condición de repetir */
                     ($1)[2]=(Inst)$6; /* siguiente instruccion */
                   }
-        | para VAR FROM NUMBER UNTIL NUMBER STEP NUMBER DO stmt end FOR_END
+        | para VAR FROM NUMBER UNTIL NUMBER STEP NUMBER DO stmtlist end FOR_END
                   {
                     ($1)[1]=(Inst)$4; /* valor inicial */
                     ($1)[2]=(Inst)$6; /* valor final */
@@ -83,7 +85,6 @@ stmt :    /* nada: epsilon produccion */  {$$=progp;}
                     ($1)[5]=(Inst)$11; /* end */
                     ($1)[6]=(Inst)$2; /* variable del bucle */
                   }
-        | stmtlist {$$ = $1;}
         /* | '{' stmtlist '}'  {$$ = $2;} */
         ;
 
@@ -175,13 +176,21 @@ jmp_buf begin;
 /* Dispositivo de entrada estándar de yylex() */
 extern FILE * yyin;
 
+/* Indica el modo de ejecución a las funciones del intérprete */
+extern int modo_interprete;
+
 
 int main(int argc, char *argv[])
 {
 
  /* Si se invoca el intérprete con un fichero de entrada */
  /* entonces se establece como dispositivo de entrada para yylex() */
- if (argc == 2) yyin = fopen(argv[1],"r");
+ if (argc == 2) {
+  yyin = fopen(argv[1],"r");
+  modo_interprete = 0;
+ } else {
+  modo_interprete = 1;
+ }
 
  progname=argv[0];
 

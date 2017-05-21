@@ -82,6 +82,8 @@ espacio 		[\t\n]
 ":="    {return ASIGNACION;}
 "_mod"	{return MODULO;}
 "_div"	{return DIVIDIR_INT;}
+"_borrar" {return CLEAN;}
+"_lugar"  {return POSITION;}
 "**"	{return POTENCIA;}
  	 
 \n      {lineno++; } /* no se devuelve nada, continúa el analisis léxico */

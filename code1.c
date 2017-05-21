@@ -18,6 +18,9 @@ Inst *progp;       /* Siguiente lugar libre para la generacion de codigo */
 
 Inst *pc; /* Contador de programa durante la ejecucion */
 
+int modo_interprete; /* Indica si la ejecución es en modo intérprete (1) */
+                     /* o en modo batch (0) */
+
 void initcode() /* inicializacion para la generacion de codigo */
 {
  stackp = stack;
@@ -83,10 +86,16 @@ void execute(Inst *p)  /* Ejecucion con la maquina */
 /* El contador de programa pc se inicializa con la primera instruccion a */ 
 /* ejecutar */
  
- for (pc=p; *pc != STOP; )
+  for (pc=p; *pc != STOP; ) {
     (*(*pc++))();              /* Ejecucion de la instruccion y desplazar */
-}                              /* el contador de programa pc */
-
+                               /* el contador de programa pc */
+    if (pc == NULL) {
+      fprintf(stderr, " Error. Se intentó ejecutar una instrucción inválida, revise"
+                      " la sintaxis\n");
+      break;
+    }
+  }
+}
 /****************************************************************************/
 /****************************************************************************/
 
@@ -163,9 +172,15 @@ void escribir() /* sacar de la pila el valor superior y escribirlo */
  d=pop();  /* Obtener numero */
 
  if (d.subtipo == STRING) {
-  printf("\t ---> %s\n", d.str);
+  if (modo_interprete)
+    printf("\t ---> %s\n", d.str);
+  else
+    printf("%s", d.str);
  } else if (d.subtipo == NUMBER) {
-  printf("\t ---> %.8g\n",d.val);
+  if (modo_interprete)
+    printf("\t ---> %.8g\n",d.val);
+  else
+    printf("%.8g",d.val);
  } else {
   execerror(" Error. Tipo a escribir desconocido", (char *) 0);
  }
@@ -188,6 +203,23 @@ void eval() /* evaluar una variable en la pila */
     d.subtipo = NUMBER;
  }
  push(d);             /* Apilar valor */
+}
+
+void borrarpantalla()
+{
+  printf("\33[2J") ;
+}
+
+void posicion()
+{
+  Symbol* s1 = (Symbol*)(*pc);
+  Symbol* s2 = (Symbol*)(*(pc+1));
+  if (s1->tipo != NUMBER || s2->tipo != NUMBER) {
+    execerror(" Ambos argumentos deben ser numéricos", (char*)0);
+  }
+
+  printf("\033[%d;%dH", (int)s1->u.val, (int)s2->u.val);
+  pc = pc+2;
 }
 
 void funcion0() /* evaluar una funcion predefinida sin parametros */
@@ -348,8 +380,10 @@ void leervariable() /* Leer una variable numerica por teclado */
 
  /* Se comprueba si el identificador es una variable */ 
   if ((variable->tipo == INDEFINIDA) || (variable->tipo == VAR))
-    { 
-    printf("Número--> ");
+  {
+    if (modo_interprete)
+      printf("Número--> ");
+
     while((c=getchar())=='\n') ;
     ungetc(c,stdin);
     scanf("%lf",&variable->u.val);
@@ -357,9 +391,9 @@ void leervariable() /* Leer una variable numerica por teclado */
     variable->subtipo=NUMBER;
     pc++;
 
-   }
- else
+  } else {
      execerror("No es una variable",variable->nombre);
+  }
 }
 
 void leercadena()
@@ -371,7 +405,9 @@ void leercadena()
 
   if ((variable->tipo == INDEFINIDA) || (variable->tipo == VAR))
   {
-    printf("Cadena--> ");
+    if (modo_interprete)
+      printf("Cadena--> ");
+
     while((s[0]=getchar())=='\n') ;
     fgets(&s[1],127,stdin);
     variable->u.str = malloc(sizeof(char)*(strlen(s)+1));
@@ -636,7 +672,7 @@ void ifcode()
  
  
 /* Si se cumple la condición ejecutar el cuerpo del if */
- if(d.val)
+ if(d.val && *((Inst **)(savepc)))
    execute(*((Inst **)(savepc)));
  
 /* Si no se cumple la condicion se comprueba si existe parte else   */
@@ -660,12 +696,15 @@ void repeatcode()
  Datum d;
  Inst *savepc = pc;    /* Puntero auxiliar para guardar pc */
 
-  do{
-     execute(savepc+2);               /* Ejecutar cuerpo */
-     execute(*((Inst **)(savepc)));   /* Ejecutar condición */
-     
-     d=pop();              /* Obtener el resultado de la condicion */
-   } while (!d.val);
+  /* Sólo se ejecuta el bucle si es válido en cuerpo */
+  if (*((Inst **)(savepc+2))) {
+    do{
+       execute(savepc+2);               /* Ejecutar cuerpo */
+       execute(*((Inst **)(savepc)));   /* Ejecutar condición */
+       
+       d=pop();              /* Obtener el resultado de la condicion */
+    } while (!d.val);
+  }
  
 /* Asignar a pc la posicion del vector de instrucciones que contiene */  
 /* la siguiente instruccion a ejecutar */ 
@@ -691,9 +730,13 @@ void forcode()
   double step = ((Symbol *)*(savepc+2))->u.val;
   /*printf("paso: %lf\n", step);*/
 
-  while (variable->u.val != until_var) {
-    execute(*((Inst **)(savepc+3)));
-    variable->u.val += step;
+  /* Sólo si es válido el bloque de instrucciones */
+  if (*((Inst **)(savepc+3))) {
+    while (variable->u.val != until_var) {
+      
+      execute(*((Inst **)(savepc+3)));
+      variable->u.val += step;
+    }
   }
 
   /* Asignamos el pc a la posición de la siguiente instruccion */

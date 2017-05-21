@@ -15,11 +15,11 @@ escribir_cadena(d);
 escribir_cadena(s || 'c de cadena');
 leer_cadena(str);
 escribir('La cadena es: ' || str);
-si ('hola' == 'hola') entonces {
-	escribir('coinciden las cadenas\n');
-} si_no {
-	escribir('no coinciden las cadenas\n');
-} fin_si;
+si ('hola' == 'hola') entonces
+	escribir('coinciden las cadenas\n')
+si_no
+	escribir('no coinciden las cadenas\n')
+fin_si;
 escribir('''Esto es
 una cadena
 multilínea''');
