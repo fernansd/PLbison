@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include  <math.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "ejemplo1.h"
-#include "ejemplo1.tab.h"
+#include "ipe.h"
+#include "ipe.tab.h"
 
 #include "macros.h"
 
@@ -750,26 +750,26 @@ void forcode()
   Datum d;
 
   Symbol* variable = (Symbol*)*(savepc+4);
-  printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);
+  /*printf("usada variable %s con valor %lf\n", variable->nombre, variable->u.val);*/
   variable->tipo = VAR;
 
   /* Inicializar variable del bucle */
   execute(savepc+5);
   d = pop();
   variable->u.val = d.val;
-  printf("desde: %lf\n", variable->u.val);
+  /*printf("desde: %lf\n", variable->u.val);*/
 
   /* Valor de parada del bucle */
   execute((Inst*)*(savepc));
   d = pop();
   double until_var = d.val;
-  printf("hasta: %lf\n", until_var);
+  /*printf("hasta: %lf\n", until_var);*/
 
   /* Valor del paso dado entre iteraciones */
   execute((Inst*)*(savepc+1));
   d = pop();
   double step = d.val;
-  printf("paso: %lf\n", step);
+  /*printf("paso: %lf\n", step);*/
 
   /* Sólo si es válido el bloque de instrucciones */
   if (*((Inst **)(savepc+2))) {

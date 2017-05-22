@@ -1,8 +1,8 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "ejemplo1.h"
-#include "ejemplo1.tab.h"
+#include "ipe.h"
+#include "ipe.tab.h"
 
 /* Prototipo de una nueva funcion matematica */
 extern double integer(double x), Azar();

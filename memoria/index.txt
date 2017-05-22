@@ -1,10 +1,10 @@
-Introduccion
-Lenguaje pseudocodigo
-Tabla de símbolos
-Análisis léxico
-Análisis sintáctico
-Funciones auxiliares
-Modo de obtención del intérprete
-Modo de ejecución del intérprete
-Ejemplos
-Conclusiones
+X - Introduccion
+X - Lenguaje pseudocodigo
+X - Tabla de símbolos
+X - Análisis léxico
+X - Análisis sintáctico
+X - Funciones auxiliares
+X - Modo de obtención del intérprete
+X - Modo de ejecución del intérprete
+X - Ejemplos
+  - Conclusiones

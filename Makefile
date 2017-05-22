@@ -1,12 +1,12 @@
-VERSION= 1
-FUENTE = ejemplo$(VERSION)
-LEXICO = lexico$(VERSION)
+VERSION = 
+FUENTE = ipe
+LEXICO = lexico
 
 CC = gcc
 CFLAGS = -c -g -Wall -ansi
 YFLAGS = -d         # Generar el fichero $(FUENTE).tab.h 
 LFLAGS = -lm -lfl   # fl: biblioteca de flex; m: biblioteca matemática  
-OBJS= $(FUENTE).tab.o lex.yy.o  init$(VERSION).o   math$(VERSION).o   symbol$(VERSION).o  code$(VERSION).o
+OBJS= $(FUENTE).tab.o lex.yy.o  init.o   math.o   symbol.o  code.o
 
 $(FUENTE).exe: $(OBJS) 
 	$(CC) $(OBJS) $(LFLAGS) -o $(FUENTE).exe

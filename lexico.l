@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "macros.h"
-#include "ejemplo1.h"
-#include "ejemplo1.tab.h"
+#include "ipe.h"
+#include "ipe.tab.h"
 extern char *progname;
 extern int lineno;
 %}
@@ -13,6 +13,7 @@ extern int lineno;
 numero        [0-9]
 letra         [a-zA-Z]
 identificador {letra}(({letra}|{numero}|_({letra}|{numero}))*)?
+identificador_malo ({letra}|{numero}|_)+
 espacio 		[\t\n]
 
 %x COMENTARIO
@@ -88,6 +89,9 @@ espacio 		[\t\n]
 "_borrar" {return CLEAN;}
 "_lugar"  {return POSITION;}
 "**"	{return POTENCIA;}
+
+{identificador_malo} {
+            execerror(" Identificador no valido",yytext);}
  	 
 \n      {lineno++; } /* no se devuelve nada, continúa el analisis léxico */
 .       {return yytext[0];}

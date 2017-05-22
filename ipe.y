@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "ejemplo1.h"
+#include "ipe.h"
 
 #include "macros.h"
 
